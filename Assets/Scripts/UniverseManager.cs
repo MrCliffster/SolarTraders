@@ -18,7 +18,7 @@ public class UniverseManager : MonoBehaviour
     {
         for (int i = 0; i < uni.Systems.Count; i++)
         {
-            uni.Systems.get
+            //pass
         }
     }
 
