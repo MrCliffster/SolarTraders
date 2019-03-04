@@ -5,39 +5,42 @@ namespace SolarTraders
 {
     public class Universe
     {
-        private List<SolarSystem> systems;
-
-        public List<SolarSystem> Systems
-        {
-            get
-            {
-                return systems;
-            }
-        }
+        public List<SolarSystem> Systems { get; }
 
         private int numberSystems;
 
         public Universe(int systemCount = 1)
         {
-            systems = new List<SolarSystem>(systemCount);
+            Systems = new List<SolarSystem>(systemCount);
         }
 
         public void AddSolarSystem()
         {
-            systems.Add(new SolarSystem("medium"));
+            Systems.Add(new SolarSystem("medium"));
         }
     }
 
     public class SolarSystem
     {
-        private List<PlanetaryBody> bodies;
+        public List<PlanetaryBody> Bodies { get; }
+
+
         string size; // Change to enum? One of: Small/Med/Large/Huge
-        int maximum_radius;
+        int maximum_radius = 300;
+
+        public int Maximum_radius
+        {
+            get
+            {
+                return maximum_radius;
+            }
+        }
+
         int numberBodies; // max number bodies = size max + 1 for star
         public SolarSystem(string size)
         {
             this.size = size;
-            bodies = new List<PlanetaryBody>
+            Bodies = new List<PlanetaryBody>
             {
                 new Star(Star.GetStarType())
             };
@@ -68,11 +71,11 @@ namespace SolarTraders
             {
                 if (i == 2) // third rock from the sun! Randomise this eventually
                 {
-                    bodies.Add(new Planet(true, Planet.GetPlanetType()));
+                    Bodies.Add(new Planet(true, Planet.GetPlanetType()));
                 }
                 else
                 {
-                    bodies.Add(new Planet(false, Planet.GetPlanetType()));
+                    Bodies.Add(new Planet(false, Planet.GetPlanetType()));
                 }
             }
         }
@@ -112,6 +115,8 @@ namespace SolarTraders
         // Constructor
         public Planet(bool isColonised, string type)
         {
+            deposits = new List<ResourceDeposit>();
+            moons = new List<Moon>();
             colonised = isColonised;
             this.type = type;
             MakeMoons();
@@ -140,6 +145,10 @@ namespace SolarTraders
 
     public class Moon : PlanetaryBody
     {
+        public Moon()
+        {
+            // Fill out later
+        }
     }
 }
 
