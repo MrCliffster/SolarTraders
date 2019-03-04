@@ -26,7 +26,7 @@ namespace SolarTraders
 
 
         string size; // Change to enum? One of: Small/Med/Large/Huge
-        int maximum_radius = 300;
+        int maximum_radius = 100;
 
         public int Maximum_radius
         {
