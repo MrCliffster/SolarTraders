@@ -1,29 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace SolarTraders
 {
+    /// <summary>
+    /// Universe is a Singleton model of the in-game universe.
+    /// </summary>
     public class Universe
     {
-        public List<SolarSystem> Systems { get; }
+        private static Universe instance = new Universe();
 
-        private int numberSystems;
+        public static Universe Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Universe();
+                }
+                return instance;
+            }
+        }
 
-        public Universe(int systemCount = 1)
+        // Constructor
+        private Universe(int systemCount = 1)
         {
             Systems = new List<SolarSystem>(systemCount);
         }
+
+        public List<SolarSystem> Systems { get; }
+
+        private int numberSystems;
 
         public void AddSolarSystem()
         {
             Systems.Add(new SolarSystem("medium"));
         }
+
     }
 
     public class SolarSystem
     {
         public List<PlanetaryBody> Bodies { get; }
 
+        public Dictionary<PlanetaryBody, GameObject> BodyToObjectMap { get; }
 
         string size; // Change to enum? One of: Small/Med/Large/Huge
         int maximum_radius = 100;
@@ -37,6 +58,8 @@ namespace SolarTraders
         }
 
         int numberBodies; // max number bodies = size max + 1 for star
+
+        // Constructor
         public SolarSystem(string size)
         {
             this.size = size;
@@ -44,26 +67,28 @@ namespace SolarTraders
             {
                 new Star(Star.GetStarType())
             };
+
+            BodyToObjectMap = new Dictionary<PlanetaryBody, GameObject>();
+
             GeneratePlanets();
         }
 
         private void GeneratePlanets()
         {
-            Random random = new Random();
             int numPlanets = 3;
             switch (size)
             {
                 case "small":
-                    numPlanets = random.Next(3, 5);
+                    numPlanets = Random.Range(3, 5);
                     break;
                 case "medium":
-                    numPlanets = random.Next(4, 6);
+                    numPlanets = Random.Range(4, 6);
                     break;
                 case "large":
-                    numPlanets = random.Next(5, 7);
+                    numPlanets = Random.Range(5, 7);
                     break;
                 case "huge":
-                    numPlanets = random.Next(7, 11);
+                    numPlanets = Random.Range(7, 11);
                     break;
             }
 
@@ -79,59 +104,74 @@ namespace SolarTraders
                 }
             }
         }
+
+        public PlanetaryBody GetBodyFromGameObject(GameObject obj)
+        {
+            if (BodyToObjectMap.ContainsValue(obj))
+            {
+                var key = BodyToObjectMap.Where(item => item.Value.Equals(obj)).Select(item => item.Key).FirstOrDefault();
+                return key;
+            }
+            return null;
+        }
     }
 
     public abstract class PlanetaryBody
     {
-        string name;
-        string type;
+        string Type;
+        string Name;
+
+        public PlanetaryBody(string type)
+        {
+            this.Type = type;
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name + Name;
+        }
     }
 
     public class Star : PlanetaryBody
     {
-        string type; // Change to enum? Red dwarf, neutron, black hole, regular
-        string name;
-        public Star(string type)
+        // Type = Change to enum? Red dwarf, neutron, black hole, regular
+
+        public Star(string type) : base(type)
         {
-            this.type = type;
+            // Pass
         }
 
         public static string GetStarType()
         {
             // Insert random star type logic here?
-            return "regular";
+            return "yellow";
         }
     }
 
     public class Planet : PlanetaryBody
     {
-        string name;
-        string type; // Change to enum?
         List<ResourceDeposit> deposits;
         List<Moon> moons;
-        bool colonised;
+        bool Colonised;
         public bool hasBelt;
 
         // Constructor
-        public Planet(bool isColonised, string type)
+        public Planet(bool isColonised, string type) : base(type)
         {
             deposits = new List<ResourceDeposit>();
             moons = new List<Moon>();
-            colonised = isColonised;
-            this.type = type;
+            Colonised = isColonised;
             MakeMoons();
-
         }
 
-        public void addDeposit(string type, string size)
+        public void AddDeposit(string type, string size)
         {
             deposits.Add(new ResourceDeposit(type, size));
         }
 
         private void MakeMoons()
         {
-            Random random = new Random();
-            for (int i = 0; i < random.Next(0, 2); i++)
+            for (int i = 0; i < Random.Range(0, 2); i++)
             {
                 moons.Add(new Moon());
             }
@@ -145,9 +185,9 @@ namespace SolarTraders
 
     public class Moon : PlanetaryBody
     {
-        public Moon()
+        public Moon(string type = "lunar") : base(type)
         {
-            // Fill out later
+            // Pass
         }
     }
 }
