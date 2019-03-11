@@ -65,7 +65,7 @@ namespace SolarTraders
             this.size = size;
             Bodies = new List<PlanetaryBody>
             {
-                new Star(Star.GetStarType())
+                new Star(Star.GetStarType(), "Default Star")
             };
 
             BodyToObjectMap = new Dictionary<PlanetaryBody, GameObject>();
@@ -96,11 +96,11 @@ namespace SolarTraders
             {
                 if (i == 2) // third rock from the sun! Randomise this eventually
                 {
-                    Bodies.Add(new Planet(true, Planet.GetPlanetType()));
+                    Bodies.Add(new Planet(true, Planet.GetPlanetType(), i.ToString()));
                 }
                 else
                 {
-                    Bodies.Add(new Planet(false, Planet.GetPlanetType()));
+                    Bodies.Add(new Planet(false, Planet.GetPlanetType(), i.ToString()));
                 }
             }
         }
@@ -118,12 +118,13 @@ namespace SolarTraders
 
     public abstract class PlanetaryBody
     {
-        string Type;
-        string Name;
+        public string Type { get;  }
+        public string Name { get;  }
 
-        public PlanetaryBody(string type)
+        public PlanetaryBody(string type, string name)
         {
             this.Type = type;
+            this.Name = name;
         }
 
         public override string ToString()
@@ -136,7 +137,7 @@ namespace SolarTraders
     {
         // Type = Change to enum? Red dwarf, neutron, black hole, regular
 
-        public Star(string type) : base(type)
+        public Star(string type, string name) : base(type, name)
         {
             // Pass
         }
@@ -156,7 +157,7 @@ namespace SolarTraders
         public bool hasBelt;
 
         // Constructor
-        public Planet(bool isColonised, string type) : base(type)
+        public Planet(bool isColonised, string type, string name) : base(type, name)
         {
             deposits = new List<ResourceDeposit>();
             moons = new List<Moon>();
@@ -173,7 +174,7 @@ namespace SolarTraders
         {
             for (int i = 0; i < Random.Range(0, 2); i++)
             {
-                moons.Add(new Moon());
+                moons.Add(new Moon(i.ToString()));
             }
         }
 
@@ -185,7 +186,7 @@ namespace SolarTraders
 
     public class Moon : PlanetaryBody
     {
-        public Moon(string type = "lunar") : base(type)
+        public Moon(string name, string type = "lunar") : base(type, name)
         {
             // Pass
         }
