@@ -83,4 +83,9 @@ public class CameraController : MonoBehaviour
         Vector3 _moveVector = (new Vector3(x * horizontalScrollSpeed, y * verticalScrollSpeed, z * zoomSpeed) * Time.deltaTime);
         transform.Translate(_moveVector, Space.Self);
     }
+
+    public void ResetCamera()
+    {
+        this.transform.position = Vector3.zero;
+    }
 }
