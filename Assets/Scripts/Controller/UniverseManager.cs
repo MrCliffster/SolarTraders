@@ -86,6 +86,11 @@ public class UniverseManager : MonoBehaviour
             return null;
         }
 
+        if (orbitNumber == 1)
+        {
+            // Star, so no orbit needed
+            return null;
+        }
         GameObject orbit = Instantiate(orbitPrefab);
 
         orbit.name = Name;
