@@ -9,6 +9,8 @@ public class UniverseManager : MonoBehaviour
 
     public GameObject orbitPrefab;
 
+    private AudioController ac;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,15 @@ public class UniverseManager : MonoBehaviour
                 // Add it to our Dict
                 curr_sys.BodyToObjectMap.Add(curr_sys.Bodies[j], bodyGO);
             }
+        }
+    }
+
+    private void Awake()
+    {
+        ac = FindObjectOfType<AudioController>();
+        if (ac == null)
+        {
+            Debug.LogError("No Audio Controller found!!");
         }
     }
 
@@ -111,6 +122,9 @@ public class UniverseManager : MonoBehaviour
         if (Physics.Raycast(mouseRay, out hit) && Input.GetMouseButtonDown(0))
         {
             PlanetaryBody body = Universe.Instance.Systems[0].GetBodyFromGameObject(hit.transform.gameObject);
+
+            ac.PlaySoundEffect(ac.SoundFX[1], false);
+
             Debug.Log("Clicked on " + body.ToString());
         }
     }

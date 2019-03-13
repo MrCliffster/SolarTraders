@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using SolarTraders;
+using System.Linq;
 
 public class ShipManager : MonoBehaviour
 {
@@ -12,12 +13,6 @@ public class ShipManager : MonoBehaviour
     {
         ShipList = new List<Ship>();
         ShipToObjectMap = new Dictionary<Ship, GameObject>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void BuildProbe()
@@ -44,5 +39,15 @@ public class ShipManager : MonoBehaviour
         droneObject.transform.SetParent(this.transform);
 
         ShipToObjectMap.Add(drone, droneObject);
+    }
+
+    public Ship GetShipFromGameObject(GameObject obj)
+    {
+        if (ShipToObjectMap.ContainsValue(obj))
+        {
+            var key = ShipToObjectMap.Where(item => item.Value.Equals(obj)).Select(item => item.Key).FirstOrDefault();
+            return key;
+        }
+        return null;
     }
 }
