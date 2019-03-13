@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
         uiResMan.UpdateGasText(100);
         uiResMan.UpdateFoodText(100);
         uiResMan.UpdateMetalText(100);
+        Debug.Log("Updated all resource texts!");
     }
 
     // Update is called once per frame
