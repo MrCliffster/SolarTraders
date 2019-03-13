@@ -3,6 +3,7 @@ namespace SolarTraders {
 
     public class ResourceStockpile
     {
+        public enum ResourceType { Metals, Gasses, Food};
         public int metals;
         public int gasses;
         public int food;
@@ -28,6 +29,30 @@ namespace SolarTraders {
                     gasses += amount;
                     break;
                 case 3:
+                    food += amount;
+                    break;
+                default:
+                    Debug.LogError("Invalid Resource added!");
+                    break;
+            }
+        }
+
+        // Add an amount of a resource as per:
+        // 0 = all
+        // 1 = metals
+        // 2 = gasses 
+        // 3 = food
+        public void AddResource(ResourceType resource, int amount)
+        {
+            switch (resource)
+            {
+                case ResourceType.Metals:
+                    metals += amount;
+                    break;
+                case ResourceType.Gasses:
+                    gasses += amount;
+                    break;
+                case ResourceType.Food:
                     food += amount;
                     break;
                 default:

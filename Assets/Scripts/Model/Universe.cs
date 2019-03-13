@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SolarTraders;
+using System;
 
 namespace SolarTraders
 {
@@ -79,16 +81,16 @@ namespace SolarTraders
             switch (size)
             {
                 case "small":
-                    numPlanets = Random.Range(3, 5);
+                    numPlanets = UnityEngine.Random.Range(3, 5);
                     break;
                 case "medium":
-                    numPlanets = Random.Range(4, 6);
+                    numPlanets = UnityEngine.Random.Range(4, 6);
                     break;
                 case "large":
-                    numPlanets = Random.Range(5, 7);
+                    numPlanets = UnityEngine.Random.Range(5, 7);
                     break;
                 case "huge":
-                    numPlanets = Random.Range(7, 11);
+                    numPlanets = UnityEngine.Random.Range(7, 11);
                     break;
             }
 
@@ -135,7 +137,8 @@ namespace SolarTraders
 
     public class Star : PlanetaryBody
     {
-        // Type = Change to enum? Red dwarf, neutron, black hole, regular
+        // TODO: Change to enum? Red dwarf, neutron, black hole, regular
+        public enum StarType {Yellow, Neutron, BlackHole, RedDwarf}
 
         public Star(string type, string name) : base(type, name)
         {
@@ -163,18 +166,69 @@ namespace SolarTraders
             moons = new List<Moon>();
             Colonised = isColonised;
             MakeMoons();
+            GenerateResources();
         }
 
-        public void AddDeposit(string type, string size)
+        public void AddDeposit(ResourceStockpile.ResourceType type, ResourceDeposit.Size size)
         {
             deposits.Add(new ResourceDeposit(type, size));
         }
 
         private void MakeMoons()
         {
-            for (int i = 0; i < Random.Range(0, 2); i++)
+            for (int i = 0; i < UnityEngine.Random.Range(0, 2); i++)
             {
                 moons.Add(new Moon(i.ToString()));
+            }
+        }
+
+        private void GenerateResources()
+        {
+            switch (Type)
+            {
+                case "solid":
+                    AddDeposits(ResourceStockpile.ResourceType.Metals, UnityEngine.Random.Range(0, 2));
+                    AddDeposits(ResourceStockpile.ResourceType.Gasses, UnityEngine.Random.Range(1, 4));
+                    AddDeposits(ResourceStockpile.ResourceType.Food, UnityEngine.Random.Range(2, 10));
+                    break;
+                case "gas":
+                    break;
+                case "asteroid":
+                    break;
+            }
+        }
+
+        public void AddDeposits(ResourceStockpile.ResourceType type, int number)
+        {
+            int randomSize;
+            ResourceDeposit.Size size;
+
+            for (int i = 0; i < number; i++)
+            {
+
+                randomSize = UnityEngine.Random.Range(0, 3);
+
+                switch (randomSize)
+                {
+                    case 0:
+                        size = ResourceDeposit.Size.Small;
+                        break;
+                    case 1:
+                        size = ResourceDeposit.Size.Medium;
+                        break;
+                    case 2:
+                        size = ResourceDeposit.Size.Large;
+                        break;
+                    case 3:
+                        size = ResourceDeposit.Size.Huge;
+                        break;
+                    default:
+                        size = ResourceDeposit.Size.Medium;
+                        break;
+
+                }
+
+                AddDeposit(type, size);
             }
         }
 
@@ -195,25 +249,26 @@ namespace SolarTraders
 
 public class ResourceDeposit
 {
-    string type; // Change to enum? One of Metals, Gasses, Food
-    string size; // Change to enum? One of: Small/Med/Large/Huge
+    public enum Size { Small, Medium, Large, Huge}
+    ResourceStockpile.ResourceType type;
+    Size size;
     float startingSize;
-    public ResourceDeposit(string type, string size)
+    public ResourceDeposit(ResourceStockpile.ResourceType type, Size size)
     {
         this.type = type;
         this.size = size;
         switch (size) // Add in configuration file system to change the hard-coded values
         {
-            case "small":
+            case Size.Small:
                 startingSize = 200;
                 break;
-            case "medium":
+            case Size.Medium:
                 startingSize = 500;
                 break;
-            case "large":
+            case Size.Large:
                 startingSize = 1000;
                 break;
-            case "huge":
+            case Size.Huge:
                 startingSize = 2000;
                 break;
         }
