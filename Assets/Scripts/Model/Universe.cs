@@ -150,6 +150,11 @@ namespace SolarTraders
             // Insert random star type logic here?
             return "yellow";
         }
+
+        public override string ToString()
+        {
+            return "Star " + Name;
+        }
     }
 
     public class Planet : PlanetaryBody
@@ -236,6 +241,16 @@ namespace SolarTraders
         {
             return "solid"; // change to include gas, asteroid
         }
+
+        public override string ToString()
+        {
+            string depositstrings = "";
+            foreach (ResourceDeposit dep in deposits)
+            {
+                depositstrings += dep.ToString() + ", ";
+            }
+            return "Planet '" + Name + "' with the following deposits:" + depositstrings;
+        }
     }
 
     public class Moon : PlanetaryBody
@@ -273,6 +288,11 @@ public class ResourceDeposit
                 break;
         }
 
+    }
+
+    public override string ToString()
+    {
+        return "Resource Deposit of " + startingSize + " " + type;
     }
 }
 
