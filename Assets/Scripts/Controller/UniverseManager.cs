@@ -8,6 +8,7 @@ public class UniverseManager : MonoBehaviour
     public int SeedNumber = 100;
 
     public GameObject orbitPrefab;
+    public GameObject yellowStarPrefab;
 
     private AudioController ac;
 
@@ -34,7 +35,7 @@ public class UniverseManager : MonoBehaviour
                 Vector3 bodyPos = RandomCartesianPosition(isStar, j);
 
                 // Create the Game Object
-                GameObject bodyGO = CreateBodyGameObject(bodyPos, curr_body);
+                GameObject bodyGO = CreateBodyGameObject(bodyPos, curr_body, isStar);
 
                 // Create the orbit
                 GameObject orbitGO = CreateOrbitPath(curr_body.Name + "Orbit", j + 1, this.gameObject);
@@ -69,7 +70,7 @@ public class UniverseManager : MonoBehaviour
         else
         {
             // Random position
-            distance = (planetNum + 1) * 5;
+            distance = (planetNum) * 5;
             angle = Random.Range(0, 2 * Mathf.PI);
         }
 
@@ -78,9 +79,18 @@ public class UniverseManager : MonoBehaviour
     }
 
     // Creates a GameObject and sets its position
-    private GameObject CreateBodyGameObject(Vector3 pos, PlanetaryBody body)
+    private GameObject CreateBodyGameObject(Vector3 pos, PlanetaryBody body, bool isStar)
     {
-        GameObject toReturn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        GameObject toReturn;
+        if (isStar)
+        {
+            Debug.Log("Creating star");
+            toReturn = Instantiate(yellowStarPrefab);
+        }
+        else
+        {
+            toReturn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        }
         toReturn.transform.position = pos;
         toReturn.name = body.Name;
         toReturn.transform.SetParent(this.transform);
