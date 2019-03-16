@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SolarTraders;
+using System;
 
 public class UniverseManager : MonoBehaviour
 {
@@ -11,15 +12,20 @@ public class UniverseManager : MonoBehaviour
     public GameObject yellowStarPrefab;
 
     private AudioController ac;
+    private List<VictoryCondition> victories;
+
+    private PlayerManager player;
 
     // Start is called before the first frame update
     void Start()
     {
         // Seed our universe
-        Random.InitState(SeedNumber);
+        UnityEngine.Random.InitState(SeedNumber);
 
         Universe uni = Universe.Instance;
         uni.AddSolarSystem();
+
+        victories = new List<VictoryCondition>();
 
         for (int i = 0; i < uni.Systems.Count; i++)
         {
@@ -53,6 +59,36 @@ public class UniverseManager : MonoBehaviour
         {
             Debug.LogError("No Audio Controller found!!");
         }
+
+        foreach (VictoryCondition vic in FindObjectsOfType<VictoryCondition>())
+        {
+            victories.Add(vic);
+        }
+
+        player = FindObjectOfType<PlayerManager>();
+        if (player == null)
+        {
+            throw new System.Exception("No player found!");
+        }
+
+        UpdateColonisedPlanets();
+    }
+
+    public void UpdateColonisedPlanets()
+    {
+        foreach (PlanetaryBody body in Universe.Instance.Systems[0].Bodies)
+        {
+            if (body is Planet)
+            { 
+                if (((Planet) body).Colonised)
+                {
+                    if (!player.colonisedPlanets.Contains((SolarTraders.Planet)body))
+                    {
+                        player.colonisedPlanets.Add((SolarTraders.Planet)body);
+                    }
+                }
+            }
+        }
     }
 
     // Creates a random cartesian position inside a certain radius, which is 0 if it needs to be a star
@@ -71,7 +107,7 @@ public class UniverseManager : MonoBehaviour
         {
             // Random position
             distance = (planetNum) * 5;
-            angle = Random.Range(0, 2 * Mathf.PI);
+            angle = UnityEngine.Random.Range(0, 2 * Mathf.PI);
         }
 
         // Do maths
@@ -134,8 +170,21 @@ public class UniverseManager : MonoBehaviour
             PlanetaryBody body = Universe.Instance.Systems[0].GetBodyFromGameObject(hit.transform.gameObject);
 
             ac.PlaySoundEffect(ac.SoundFX[1], false);
+            Debug.Log(body);
 
             Debug.Log("Clicked on " + body.ToString());
+        }
+
+        if (victories != null)
+        {
+            foreach (VictoryCondition vic in victories)
+            {
+                if (vic.PlayerMeetsConditions(player))
+                {
+                    // Player has won!
+                    Debug.Log("Player wins!");
+                }
+            }
         }
     }
 }

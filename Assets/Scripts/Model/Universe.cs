@@ -161,7 +161,7 @@ namespace SolarTraders
     {
         List<ResourceDeposit> deposits;
         List<Moon> moons;
-        bool Colonised;
+        public bool Colonised;
         public bool hasBelt;
 
         // Constructor

@@ -17,20 +17,21 @@ public class ShipManager : MonoBehaviour
 
     public void BuildProbe()
     {
-        Probe probe = new Probe();
+        Probe probe = new Probe(Probe.GetProbeName());
 
         ShipList.Add(probe);
 
         GameObject probeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         // probeObject.transform.position = something
         probeObject.transform.SetParent(this.transform);
+        probeObject.name = probe.Name;
 
         ShipToObjectMap.Add(probe, probeObject);
     }
 
-    public void BuildDrone()
+    public void BuildDrone(Drone.Type type)
     {
-        Drone drone = new Drone();
+        Drone drone = new Drone(Drone.GetDroneName(), type);
 
         ShipList.Add(drone);
 
