@@ -55,7 +55,7 @@ public class UIResourceManager : MonoBehaviour
         else
         {
             MetalROCText.color = NegativeColor;
-            MetalROCText.text = "-" + amount.ToString();
+            MetalROCText.text = amount.ToString();
         }
     }
 

@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
     public int FoodRateOfChange;
     public int MetalsRateOfChange;
 
-    public float tickDuration = 1.0f;
+    public float tickDuration = 100.0f;
     private float currentTime;
 
     // Awake is called before Start
@@ -43,16 +43,16 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator<WaitForSeconds> ResourceTick()
     {
-        while (Time.time - currentTime > tickDuration)
+        while (Time.time - currentTime < tickDuration)
         {
             yield return new WaitForSeconds(Time.time - currentTime);
         }
         TickResources();
+        yield return null;
     }
 
     private void TickResources()
     {
-        Debug.Log("Resources Ticked!");
         resPool.AddResource(ResourceStockpile.ResourceType.Food, FoodRateOfChange);
         resPool.AddResource(ResourceStockpile.ResourceType.Gasses, GasesRateOfChange);
         resPool.AddResource(ResourceStockpile.ResourceType.Metals, MetalsRateOfChange);
