@@ -16,16 +16,21 @@ public class UniverseManager : MonoBehaviour
 
     private PlayerManager player;
 
-    // Start is called before the first frame update
-    void Start()
+    // Awake called before Start
+    private void Awake()
     {
         // Seed our universe
         UnityEngine.Random.InitState(SeedNumber);
 
+        victories = new List<VictoryCondition>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
         Universe uni = Universe.Instance;
         uni.AddSolarSystem();
-
-        victories = new List<VictoryCondition>();
 
         for (int i = 0; i < uni.Systems.Count; i++)
         {
@@ -50,10 +55,7 @@ public class UniverseManager : MonoBehaviour
                 curr_sys.BodyToObjectMap.Add(curr_sys.Bodies[j], bodyGO);
             }
         }
-    }
 
-    private void Awake()
-    {
         ac = FindObjectOfType<AudioController>();
         if (ac == null)
         {
@@ -62,6 +64,7 @@ public class UniverseManager : MonoBehaviour
 
         foreach (VictoryCondition vic in FindObjectsOfType<VictoryCondition>())
         {
+            Debug.Log("We found one!");
             victories.Add(vic);
         }
 
@@ -170,7 +173,6 @@ public class UniverseManager : MonoBehaviour
             PlanetaryBody body = Universe.Instance.Systems[0].GetBodyFromGameObject(hit.transform.gameObject);
 
             ac.PlaySoundEffect(ac.SoundFX[1], false);
-            Debug.Log(body);
 
             Debug.Log("Clicked on " + body.ToString());
         }
