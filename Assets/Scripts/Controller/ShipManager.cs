@@ -8,11 +8,21 @@ public class ShipManager : MonoBehaviour
     List<Ship> ShipList;
     Dictionary<Ship, GameObject> ShipToObjectMap;
 
+    [SerializeField]
+    private GameObject probePrefab;
+    [SerializeField]
+    private GameObject dronePrefab;
+    [SerializeField]
+    private GameObject colShipPrefab;
+
+    private UniverseManager um;
+
     // Start is called before the first frame update
     void Start()
     {
         ShipList = new List<Ship>();
         ShipToObjectMap = new Dictionary<Ship, GameObject>();
+        um = FindObjectOfType<UniverseManager>();
     }
 
     public int GetNumShips()
@@ -26,8 +36,11 @@ public class ShipManager : MonoBehaviour
 
         ShipList.Add(probe);
 
-        GameObject probeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // probeObject.transform.position = something
+        Vector3 BuildLocation = um.currentlySelectedGO.transform.position;
+        BuildLocation.y += 1;
+
+        GameObject probeObject = Instantiate(probePrefab);
+        probeObject.transform.position = BuildLocation;
         probeObject.transform.SetParent(this.transform);
         probeObject.name = probe.Name;
 
@@ -56,8 +69,12 @@ public class ShipManager : MonoBehaviour
 
         ShipList.Add(drone);
 
-        GameObject droneObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        // Position stuff
+        GameObject droneObject = Instantiate(dronePrefab);
+        Vector3 BuildLocation = um.currentlySelectedGO.transform.position;
+
+        BuildLocation.y += 1;
+
+        droneObject.transform.position = BuildLocation; 
         droneObject.transform.SetParent(this.transform);
 
         ShipToObjectMap.Add(drone, droneObject);
@@ -69,8 +86,12 @@ public class ShipManager : MonoBehaviour
 
         ShipList.Add(ship);
 
-        GameObject shipObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        //Position stuff
+        GameObject shipObject = Instantiate(colShipPrefab);
+        Vector3 BuildLocation = um.currentlySelectedGO.transform.position;
+
+        BuildLocation.y += 1;
+
+        shipObject.transform.position = BuildLocation;
         shipObject.transform.SetParent(this.transform);
 
         ShipToObjectMap.Add(ship, shipObject);

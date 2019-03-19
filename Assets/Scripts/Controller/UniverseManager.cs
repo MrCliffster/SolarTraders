@@ -17,7 +17,7 @@ public class UniverseManager : MonoBehaviour
     private PlayerManager player;
     private ScreenManager screen;
 
-    private GameObject currentlySelectedGO;
+    public GameObject currentlySelectedGO;
 
     private PlanetaryBody lastSelectedBody;
     private Ship lastSelectedShip;
@@ -91,6 +91,7 @@ public class UniverseManager : MonoBehaviour
 
     public void UpdateColonisedPlanets()
     {
+        Debug.Log("Updating colonised planets:");
         foreach (PlanetaryBody body in Universe.Instance.Systems[0].Bodies)
         {
             if (body is Planet)
@@ -99,6 +100,7 @@ public class UniverseManager : MonoBehaviour
                 {
                     if (!player.colonisedPlanets.Contains((SolarTraders.Planet)body))
                     {
+                        Debug.Log("Added planet " + body);
                         player.colonisedPlanets.Add((SolarTraders.Planet)body);
                     }
                 }

@@ -3369,6 +3369,7 @@ MonoBehaviour:
     type: 3}
   yellowStarPrefab: {fileID: 1563070008934501669, guid: a3b7ec6a966344c7c86d6c0d94d50924,
     type: 3}
+  currentlySelectedGO: {fileID: 0}
 --- !u!4 &1764986776
 Transform:
   m_ObjectHideFlags: 0
@@ -3818,6 +3819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f569cf4756f2477c8650420a5170345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  probePrefab: {fileID: 1029801009265172557, guid: 484f8426e924940b7a80a7a53966d19b,
+    type: 3}
+  dronePrefab: {fileID: 903607786950819373, guid: 05745bbf9c6d5421a9a12e9d001efd90,
+    type: 3}
+  colShipPrefab: {fileID: 611826030374071585, guid: dac998b2a449e4447a23a214f4f93609,
+    type: 3}
 --- !u!4 &2037781411
 Transform:
   m_ObjectHideFlags: 0
