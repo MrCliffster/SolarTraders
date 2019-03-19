@@ -122,6 +122,7 @@ namespace SolarTraders
     {
         public string Type { get;  }
         public string Name { get;  }
+        public bool Explored = false;
 
         public PlanetaryBody(string type, string name)
         {
@@ -132,6 +133,18 @@ namespace SolarTraders
         public override string ToString()
         {
             return GetType().Name + Name;
+        }
+
+        public void Explore()
+        {
+            if (Explored)
+            {
+                Debug.LogWarning("Already explored this!");
+            }
+            else
+            {
+                Explored = true;
+            }
         }
     }
 
@@ -163,7 +176,6 @@ namespace SolarTraders
         List<Moon> moons;
         public bool Colonised;
         public bool hasBelt;
-        public bool Explored;
 
         // Constructor
         public Planet(bool isColonised, string type, string name) : base(type, name)
@@ -173,11 +185,7 @@ namespace SolarTraders
             Colonised = isColonised;
             if (isColonised)
             {
-                Explored = true;
-            }
-            else
-            {
-                Explored = false;
+                Explore();
             }
             MakeMoons();
             GenerateResources();
@@ -193,18 +201,6 @@ namespace SolarTraders
             for (int i = 0; i < UnityEngine.Random.Range(0, 2); i++)
             {
                 moons.Add(new Moon(i.ToString()));
-            }
-        }
-
-        public void Explore()
-        {
-            if (Explored)
-            {
-                Debug.LogWarning("Already explored this!");
-            }
-            else
-            {
-                Explored = true;
             }
         }
 

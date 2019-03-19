@@ -7,6 +7,12 @@ namespace SolarTraders
     { 
         [SerializeField]
         private GameObject SelectionDialogue;
+
+        [SerializeField]
+        private Text title;
+        [SerializeField]
+        private Text description;
+
         [SerializeField]
         private GameObject ControlPanel;
         [SerializeField]
@@ -28,6 +34,17 @@ namespace SolarTraders
                     ControlPanel.SetActive(false);
                     BuildPanel.SetActive(true);
                 }
+
+                title.text = body.Name;
+
+                if (body.Explored)
+                {
+                    description.text = body.ToString();
+                }
+                else
+                {
+                    description.text = "This planetary body is currently unexplored. Send a probe to explore it!";
+                }
             }
         }
 
@@ -45,6 +62,10 @@ namespace SolarTraders
                     ControlPanel.SetActive(true);
                     BuildPanel.SetActive(false);
                 }
+
+                title.text = ship.Name;
+
+                description.text = "No details available for Ships yet.";
             }
         }
 
