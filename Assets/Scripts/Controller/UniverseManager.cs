@@ -19,8 +19,8 @@ public class UniverseManager : MonoBehaviour
 
     public GameObject currentlySelectedGO;
 
-    private PlanetaryBody lastSelectedBody;
-    private Ship lastSelectedShip;
+    public PlanetaryBody lastSelectedBody;
+    public Ship lastSelectedShip;
 
     // Awake called before Start
     private void Awake()
@@ -91,7 +91,7 @@ public class UniverseManager : MonoBehaviour
 
     public void UpdateColonisedPlanets()
     {
-        Debug.Log("Updating colonised planets:");
+        //Debug.Log("Updating colonised planets:");
         foreach (PlanetaryBody body in Universe.Instance.Systems[0].Bodies)
         {
             if (body is Planet)
@@ -100,7 +100,7 @@ public class UniverseManager : MonoBehaviour
                 {
                     if (!player.colonisedPlanets.Contains((SolarTraders.Planet)body))
                     {
-                        Debug.Log("Added planet " + body);
+                        //Debug.Log("Added planet " + body);
                         player.colonisedPlanets.Add((SolarTraders.Planet)body);
                     }
                 }
@@ -137,7 +137,7 @@ public class UniverseManager : MonoBehaviour
         GameObject toReturn;
         if (isStar)
         {
-            Debug.Log("Creating star");
+            //Debug.Log("Creating star");
             toReturn = Instantiate(yellowStarPrefab);
         }
         else

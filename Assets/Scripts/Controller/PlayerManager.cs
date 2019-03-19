@@ -75,7 +75,7 @@ public class PlayerManager : MonoBehaviour
         int numPlanets = colonisedPlanets.Count;
         int numShips = shipMan.GetNumShips();
 
-        Debug.Log("Num Col Planets: " + numPlanets + ", Num Ships: " + numShips);
+        //Debug.Log("Num Col Planets: " + numPlanets + ", Num Ships: " + numShips);
 
         int FoodToBe = 0;
         int MetalsToBe = 0;

@@ -8,6 +8,8 @@ namespace SolarTraders
         [SerializeField]
         private GameObject SelectionDialogue;
         [SerializeField]
+        private GameObject ControlPanel;
+        [SerializeField]
         private GameObject BuildPanel;
         [SerializeField]
         private GameObject DroneBuildDialogue;
@@ -21,6 +23,11 @@ namespace SolarTraders
             else
             {
                 SelectionDialogue.SetActive(true);
+                if (ControlPanel.activeInHierarchy)
+                {
+                    ControlPanel.SetActive(false);
+                    BuildPanel.SetActive(true);
+                }
             }
         }
 
@@ -33,12 +40,17 @@ namespace SolarTraders
             else
             {
                 SelectionDialogue.SetActive(true);
+                if (BuildPanel.activeInHierarchy)
+                {
+                    ControlPanel.SetActive(true);
+                    BuildPanel.SetActive(false);
+                }
             }
         }
 
         public void CloseSelectionDialogue()
         {
-            if (!BuildPanel.activeInHierarchy)
+            if (!BuildPanel.activeInHierarchy && !ControlPanel.activeInHierarchy)
             {
                 Debug.LogWarning("Must close interior dialogues first!");
             }

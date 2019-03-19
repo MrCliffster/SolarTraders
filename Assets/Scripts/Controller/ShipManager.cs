@@ -97,6 +97,31 @@ public class ShipManager : MonoBehaviour
         ShipToObjectMap.Add(ship, shipObject);
     }
 
+    public void MoveShip()
+    {
+
+    }
+
+    public void UseAbility()
+    {
+
+    }
+
+    public void DeleteShip()
+    {
+        GameObject GameObjectToDelete = um.currentlySelectedGO;
+        Ship ShipToDelete = um.lastSelectedShip;
+
+        // Clean up UM
+        um.currentlySelectedGO = null;
+        um.lastSelectedShip = null;
+
+        ShipToObjectMap.Remove(ShipToDelete);
+        ShipList.Remove(ShipToDelete);
+        Destroy(GameObjectToDelete);
+
+    }
+
     public Ship GetShipFromGameObject(GameObject obj)
     {
         if (ShipToObjectMap.ContainsValue(obj))

@@ -99,7 +99,7 @@ public class UIResourceManager : MonoBehaviour
 
     internal void SetAllROCs(int gasesRateOfChange, int metalsRateOfChange, int foodRateOfChange)
     {
-        Debug.Log("Setting all ROCs");
+        //Debug.Log("Setting all ROCs");
         SetGasROCText(gasesRateOfChange);
         SetMetalROCText(metalsRateOfChange);
         SetFoodROCText(foodRateOfChange);

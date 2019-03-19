@@ -163,6 +163,7 @@ namespace SolarTraders
         List<Moon> moons;
         public bool Colonised;
         public bool hasBelt;
+        public bool Explored;
 
         // Constructor
         public Planet(bool isColonised, string type, string name) : base(type, name)
@@ -170,6 +171,14 @@ namespace SolarTraders
             deposits = new List<ResourceDeposit>();
             moons = new List<Moon>();
             Colonised = isColonised;
+            if (isColonised)
+            {
+                Explored = true;
+            }
+            else
+            {
+                Explored = false;
+            }
             MakeMoons();
             GenerateResources();
         }
@@ -184,6 +193,18 @@ namespace SolarTraders
             for (int i = 0; i < UnityEngine.Random.Range(0, 2); i++)
             {
                 moons.Add(new Moon(i.ToString()));
+            }
+        }
+
+        public void Explore()
+        {
+            if (Explored)
+            {
+                Debug.LogWarning("Already explored this!");
+            }
+            else
+            {
+                Explored = true;
             }
         }
 
