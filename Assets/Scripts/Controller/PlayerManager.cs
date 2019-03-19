@@ -1,14 +1,16 @@
 ﻿using SolarTraders;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
     // Managers
-    private ShipManager shipMan;
+    public ShipManager shipMan;
 
     public List<Planet> colonisedPlanets;
     public List<PlanetaryBody> exploredPlanets;
+    public List<ResourceCollector> collectors;
 
     public ResourceStockpile resPool;
     public int GasesRateOfChange;
@@ -23,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     {
         colonisedPlanets = new List<Planet>();
         resPool = new ResourceStockpile();
+        collectors = new List<ResourceCollector>();
     }
 
     // Start is called before the first frame update
@@ -53,6 +56,8 @@ public class PlayerManager : MonoBehaviour
 
     private void TickResources()
     {
+        UpdateROC();
+
         resPool.AddResource(ResourceStockpile.ResourceType.Food, FoodRateOfChange);
         resPool.AddResource(ResourceStockpile.ResourceType.Gasses, GasesRateOfChange);
         resPool.AddResource(ResourceStockpile.ResourceType.Metals, MetalsRateOfChange);
@@ -62,5 +67,42 @@ public class PlayerManager : MonoBehaviour
 
         currentTime = Time.time;
         StartCoroutine(ResourceTick());
+    }
+
+    private void UpdateROC()
+    {
+        int numPlanets = colonisedPlanets.Count;
+        int numShips = shipMan.GetNumShips();
+
+        int FoodToBe = 0;
+        int MetalsToBe = 0;
+        int GasesToBe = 0;
+
+        // Take away food needed
+        FoodToBe -= (3 * numPlanets);
+
+        // Take away ship maintenance
+        MetalsToBe -= (2 * numShips);
+        GasesToBe -= numShips;
+
+        foreach (ResourceCollector col in collectors)
+        {
+            switch (col.type)
+            {
+                case ResourceStockpile.ResourceType.Food:
+                    FoodToBe += Farm.collectionRate;
+                    break;
+                case ResourceStockpile.ResourceType.Gasses:
+                    GasesToBe += Refinery.collectionRate;
+                    break;
+                case ResourceStockpile.ResourceType.Metals:
+                    MetalsToBe += Mine.collectionRate;
+                    break;
+                default:
+                    Debug.LogError("No appropriate type for Resource Collector!");
+                    break;
+            }
+
+        }
     }
 }

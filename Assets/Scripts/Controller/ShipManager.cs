@@ -15,6 +15,11 @@ public class ShipManager : MonoBehaviour
         ShipToObjectMap = new Dictionary<Ship, GameObject>();
     }
 
+    public int GetNumShips()
+    {
+        return ShipList.Count;
+    }
+
     public void BuildProbe()
     {
         Probe probe = new Probe(Probe.GetProbeName());
@@ -29,6 +34,22 @@ public class ShipManager : MonoBehaviour
         ShipToObjectMap.Add(probe, probeObject);
     }
 
+    public void buildDroneGUIWrapper(int typeInt)
+    {
+        switch (typeInt)
+        {
+            case 0:
+                BuildDrone(Drone.Type.Mining);
+                break;
+            case 1:
+                BuildDrone(Drone.Type.Refining);
+                break;
+            case 2:
+                BuildDrone(Drone.Type.Farming);
+                break;
+        }
+    }
+
     public void BuildDrone(Drone.Type type)
     {
         Drone drone = new Drone(Drone.GetDroneName(), type);
@@ -40,6 +61,19 @@ public class ShipManager : MonoBehaviour
         droneObject.transform.SetParent(this.transform);
 
         ShipToObjectMap.Add(drone, droneObject);
+    }
+
+    public void BuildColonyShip()
+    {
+        ColonyShip ship = new ColonyShip(ColonyShip.GetColonyShipName());
+
+        ShipList.Add(ship);
+
+        GameObject shipObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        //Position stuff
+        shipObject.transform.SetParent(this.transform);
+
+        ShipToObjectMap.Add(ship, shipObject);
     }
 
     public Ship GetShipFromGameObject(GameObject obj)

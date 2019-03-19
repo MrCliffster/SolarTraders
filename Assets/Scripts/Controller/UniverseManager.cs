@@ -15,6 +15,12 @@ public class UniverseManager : MonoBehaviour
     private List<VictoryCondition> victories;
 
     private PlayerManager player;
+    private ScreenManager screen;
+
+    private GameObject currentlySelectedGO;
+
+    private PlanetaryBody lastSelectedBody;
+    private Ship lastSelectedShip;
 
     // Awake called before Start
     private void Awake()
@@ -72,6 +78,12 @@ public class UniverseManager : MonoBehaviour
         if (player == null)
         {
             throw new System.Exception("No player found!");
+        }
+
+        screen = FindObjectOfType<ScreenManager>();
+        if (screen == null)
+        {
+            throw new System.Exception("No Screen found!");
         }
 
         UpdateColonisedPlanets();
@@ -132,6 +144,7 @@ public class UniverseManager : MonoBehaviour
         }
         toReturn.transform.position = pos;
         toReturn.name = body.Name;
+        toReturn.tag = "Body";
         toReturn.transform.SetParent(this.transform);
 
         return toReturn;
@@ -170,12 +183,41 @@ public class UniverseManager : MonoBehaviour
 
         if (Physics.Raycast(mouseRay, out hit) && Input.GetMouseButtonDown(0))
         {
-            PlanetaryBody body = Universe.Instance.Systems[0].GetBodyFromGameObject(hit.transform.gameObject);
+            if (currentlySelectedGO != null && currentlySelectedGO.Equals(hit.transform.gameObject))
+            {
+                // Double clicked
+                if(currentlySelectedGO.tag.Equals("Body"))
+                {
+                    Debug.Log("Double Clicked on " + lastSelectedBody);
+                    screen.ShowSelectionDialogue(lastSelectedBody);
+                } 
+                else if (currentlySelectedGO.tag.Equals("Ship"))
+                {
+                    Debug.Log("Double Clicked on " + lastSelectedShip);
+                    screen.ShowSelectionDialogue(lastSelectedShip);
+                }
 
-            ac.PlaySoundEffect(ac.SoundFX[1], false);
+                ac.PlaySoundEffect(ac.SoundFX[0], false);
+            }
+            else
+            {
+                currentlySelectedGO = hit.transform.gameObject;
+                if (currentlySelectedGO.tag.Equals("Body"))
+                {
+                    lastSelectedBody = Universe.Instance.Systems[0].GetBodyFromGameObject(currentlySelectedGO);
+                    Debug.Log("Clicked on " + lastSelectedBody);
+                } 
+                else if (currentlySelectedGO.tag.Equals("Ship")) 
+                {
+                    lastSelectedShip = player.shipMan.GetShipFromGameObject(currentlySelectedGO);
+                    Debug.Log("Clicked on " + lastSelectedShip);
+                }
 
-            Debug.Log("Clicked on " + body.ToString());
-        }
+                ac.PlaySoundEffect(ac.SoundFX[1], false);
+              
+            }
+        } 
+
 
         if (victories != null)
         {

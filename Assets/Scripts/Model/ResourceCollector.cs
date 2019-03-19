@@ -4,17 +4,19 @@ namespace SolarTraders
     public abstract class ResourceCollector
     {
         public ResourceStockpile.ResourceType type;
-        public readonly int ColonisedBonus = 5;
+        public static readonly int ColonisedBonus = 5;
+        public bool onColonisedPlanet;
     }
 
     public class Refinery : ResourceCollector
     {
         public static int ConstructionCost = 20;
 
-        public readonly int collectionRate = 2;
+        public static readonly int collectionRate = 2;
 
-        public Refinery()
+        public Refinery(bool onColonisedPlanet)
         {
+            base.onColonisedPlanet = onColonisedPlanet;
             base.type = ResourceStockpile.ResourceType.Gasses;
         }
     }
@@ -23,9 +25,9 @@ namespace SolarTraders
     {
         public static int ConstructionCost = 20;
 
-        public readonly int collectionRate = 2;
+        public static readonly int collectionRate = 2;
 
-        public Mine()
+        public Mine(bool onColonisedPlanet)
         {
             base.type = ResourceStockpile.ResourceType.Metals;
         }
@@ -35,9 +37,9 @@ namespace SolarTraders
     {
         public static int ConstructionCost = 20;
 
-        public readonly int collectionRate = 2;
+        public static readonly int collectionRate = 2;
 
-        public Farm()
+        public Farm(bool onColonisedPlanet)
         {
             base.type = ResourceStockpile.ResourceType.Food;
         }
