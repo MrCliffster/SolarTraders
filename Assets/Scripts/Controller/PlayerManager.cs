@@ -71,8 +71,11 @@ public class PlayerManager : MonoBehaviour
 
     private void UpdateROC()
     {
+
         int numPlanets = colonisedPlanets.Count;
         int numShips = shipMan.GetNumShips();
+
+        Debug.Log("Num Col Planets: " + numPlanets + ", Num Ships: " + numShips);
 
         int FoodToBe = 0;
         int MetalsToBe = 0;
@@ -104,5 +107,9 @@ public class PlayerManager : MonoBehaviour
             }
 
         }
+
+        GasesRateOfChange = GasesToBe;
+        FoodRateOfChange = FoodToBe;
+        MetalsRateOfChange = MetalsToBe;
     }
 }
